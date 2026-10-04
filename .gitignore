@@ -219,6 +219,7 @@ __marimo__/
 
 # Project data and outputs
 data/*
+!data/splits.csv
 outputs/
 runs/
 mlruns/
