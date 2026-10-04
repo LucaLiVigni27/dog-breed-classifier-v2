@@ -16,7 +16,7 @@ EfficientNet, and ViT models. V1 used TensorFlow/Keras.
   No v1 results survived, so there is nothing to keep comparable.
 - New dataset: every Stanford Dogs image of the 12 breeds from v1, rebuilt with
   `python -m dogbreeds.build_dataset`.
-- No manual editing of the dataset.
+- No manual removlas: reviewing only part of the data would apply uneven standards. Known issues are listed in the data card.
 - Mislabels will be looked for after the first training using one rule for the whole dataset.
 
 ## 09-2026 - The 12 breeds
@@ -31,7 +31,7 @@ EfficientNet, and ViT models. V1 used TensorFlow/Keras.
   threshold for "not one of these" using the other Stanford breeds as unseen dogs.
 
 ## 10-2026 - Duplicates and split
-- Perceptual hashing (pHash, distance <= 8) found 3 duplicate pairs, (2 Bloodhound, 1 Maltese).
+- Perceptual hashing (pHash, distance <= 8) found 3 duplicate pairs (2 Bloodhound, 1 Maltese).
   Kept, but each pair stays in one split.
 - Stratified 70/15/15 train/val/test split per breed, seed 42, saved to
   data/splits.csv (committed to git). Every experiment uses this file.
