@@ -1,11 +1,12 @@
 # Data card
 
 **Dataset:** every Stanford Dogs image of 12 breeds: 2,158 RGB JPEGs.
-**Source:** [Stanford Dogs]
-(http://vision.stanford.edu/aditya86/ImageNetDogs/)
-(Khosla et al., *Novel Dataset for Fine-Grained Image Categoriation*,
+
+**Source:** [Stanford Dogs](http://vision.stanford.edu/aditya86/ImageNetDogs/)
+(Khosla et al., *Novel Dataset for Fine-Grained Image Categorization*,
 FGVC workshop, CVPR 2011), built from ImageNet.
-**License:** ImageNet terms: non-commerical research and education only.
+
+**License:** ImageNet terms: non-commercial research and education only.
 Images are not in this repo; download `images.tar` from the link above, extract it to `data/stanford_dogs/`, and
 run `python -m dogbreeds.build_dataset`.
 
@@ -36,9 +37,9 @@ Stanford's official split is not used.
 ## Known issues
 
 - **Label noise:** a few likely wrong-breed images.
-- **Busy photos:** people, toher dogs, dogs small or cut off.
+- **Busy photos:** people, other dogs, dogs small or cut off.
 - **Text and watermarks**: e.g. `n02107142_4663` (watermark), `n02107142_534` (sign reading "DOBERMAN").
 - **Variety:** puppies and adults mixed; no mixed-breed dogs; 81 images under 224 px on the shortest side.
-- **ImageNet overlap:** pretrained ImageNet modles have likely seen these exact photos, so test accuracy may be optimisitc
+- **ImageNet overlap:** pretrained ImageNet models have likely seen these exact photos, so test accuracy may be optimistic.
 
 No images were removed; see `docs/decisions.md`
