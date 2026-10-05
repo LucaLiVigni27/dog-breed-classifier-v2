@@ -1,0 +1,5 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
+streamlit
+dogbreeds @ git+https://github.com/LucaLiVigni27/dog-breed-classifier-v2.git

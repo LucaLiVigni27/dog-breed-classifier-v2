@@ -24,6 +24,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff", "pre-commit", "jupyter"]
+demo = ["streamlit", "streamlit-paste-button"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
