@@ -2,4 +2,5 @@
 torch
 torchvision
 streamlit
+streamlit-paste-button
 dogbreeds @ git+https://github.com/LucaLiVigni27/dog-breed-classifier-v2.git
