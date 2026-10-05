@@ -35,3 +35,8 @@ EfficientNet, and ViT models. V1 used TensorFlow/Keras.
   Kept, but each pair stays in one split.
 - Stratified 70/15/15 train/val/test split per breed, seed 42, saved to
   data/splits.csv (committed to git). Every experiment uses this file.
+
+## 10-2026 - Pretrained weights
+- Models use ImageNet-1k pretrained weights, pinned by name (convnext_tiny.fb_in1k,
+efficientnet_b0.ra_in1k). timm's default convnext_tiny uses ImageNet-12k, which would
+add even more overlap with Stanford Dogs

@@ -1,6 +1,6 @@
 # Transfer learning from ImageNet weights; head-only warm-up for 2 epochs, then fine-tune all.
 run_name: convnext_tiny
-model: convnext_tiny
+model: convnext_tiny.fb_in1k
 pretrained: true
 image_size: 224
 augment: true
