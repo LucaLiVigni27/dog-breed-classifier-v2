@@ -19,22 +19,15 @@ from torch.utils.data import DataLoader
 
 from dogbreeds.breeds import CLASS_NAMES
 from dogbreeds.dataset import DogBreedDataset, build_transform
-from dogbreeds.model import build_model
+from dogbreeds.model import load_checkpoint
 from dogbreeds.paths import RAW_DIR
 from dogbreeds.split import SPLITS_CSV
 from dogbreeds.train import get_device
 
 
 def load_run(run_dir: Path, device: torch.device) -> tuple[torch.nn.Module, dict]:
-    """Rebuild the model from best.pt and return it with the config it was trained with."""
-    checkpoint = torch.load(run_dir / "best.pt", map_location=device, weights_only=True)
-    if checkpoint["class_names"] != CLASS_NAMES:
-        raise ValueError("Checkpoint was trained on different classes than CLASS_NAMES")
-    config = checkpoint["config"]
-    # pretrained=False: the trained weights come from the checkpoint, nothing to download.
-    model = build_model(config["model"], len(CLASS_NAMES), pretrained=False)
-    model.load_state_dict(checkpoint["model_state"])
-    return model.to(device).eval(), config
+    """Rebuild the model from run_dir/best.pt and return it with the config it was trained with."""
+    return load_checkpoint(run_dir / "best.pt", device)
 
 
 @torch.no_grad()

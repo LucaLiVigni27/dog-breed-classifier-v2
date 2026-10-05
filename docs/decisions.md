@@ -22,7 +22,7 @@ EfficientNet, and ViT models. V1 used TensorFlow/Keras.
 ## 09-2026 - The 12 breeds
 - Same 12 breeds as v1, since v2 is a rebuild of that project.
 - They include deliberate look-alike groups (Maltese / Shih-Tzu / Yorkshire Terrier,
-  Basset / Bloodhound, Siberian Husky / German Shepherd).
+  Basset / Bloodhound / Ridgeback, Siberian Husky / German Shepherd).
 - Small enough to train on a free Colab GPU. More Stanford breeds can be added later
   by extending BREED_WN_IDS in src/dogbreeds/breeds.py.
 
@@ -57,3 +57,21 @@ genuinely new images.
 and photographer are recorded in the file names. See docs/fresh_photos.csv.
 - Checked with perceptual hashing (pHash, distance <=8) against all 20,580 Stanford Dogs images: 0 matches
 - Photos are used for evaluation only and are not stored in the repo.
+
+## 10-2026 - Final model
+- Re-run with best epoch chosen by val loss (val accuracy / val loss):
+v1 baseline 31.6% / 2.01, EfficientNet-B0 94.4% / 0.31, ConvNeXt-Tiny 98.8% / 0.16
+- Final model: ConvNeXt-Tiny (fb-in1k weights), epoch 11 of run convnext_tiny_v2.
+- Its 4 val errors are all within the look-alike groups (Maltese / Shih-Tzu / Yorkshire Terrier,
+Bloodhound / Ridgeback).
+- Test split, fresh photos and unknown dog check are run once, after this decision
+
+## 10-2026 - Final results and "unknown dog" threshold
+- Test (326): v1 30.1%, EfficientNet-B0 96.3%, ConvNeXt-Tiny 98.5% (5 errors, mostly look-alikes).
+- Fresh photos (60, not in Stanford Dogs): v1 31.7%, EfficientNet-B0 93.3%, ConvNeXt-Tiny 98.3% (59/60).
+- Unknown dogs (540 images, 5 from each of the other 108 Stanford breeds): at a confidence
+  threshold of 0.8, ConvNeXt rejects 90% of them while rejecting 5% (3/60) of fresh photos of
+  our breeds. Threshold 0.8 is therefore taken, but it was chosen on these same results, so the figures
+  are slightly optimistic.
+- Label smoothing (0.1) caps confidence at about 0.91, so thresholds above ~0.85 reject
+  almost everything.

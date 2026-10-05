@@ -34,6 +34,14 @@ Stanford's official split is not used.
 - Breeds have 150-252 images (1.7x); the imbalance is handled in training.
 - Same 12 breeds as the 2024 v1 project, including look-alike groups: Maltese / Shih-Tzu / Yorkshire Terrier , Basset / Bloodhound, Siberian Husky / German Shepherd.
 
+## Fresh photos (evaluation only)
+
+60 recent photos (5 per breed) from Unsplash, Pexels and Purina UK, listed in `docs/fresh_photos.csv`. A perceptual-hash check against all 20,580 Stanford Dogs images found no matches. Used once, to test the final model on genuinely new images taht are not stored in the repo.
+
+## Final model results
+
+ConvNeXt-Tiny: 98.5% on the test split, 59 / 60 on the fresh photos. Errors fall within the look-alike groups. See the README and `notebooks/03_results.ipynb`.
+
 ## Known issues
 
 - **Label noise:** a few likely wrong-breed images.

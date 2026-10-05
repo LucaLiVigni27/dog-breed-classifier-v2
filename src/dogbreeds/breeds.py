@@ -15,5 +15,21 @@ BREED_WN_IDS = {
     "yorkshire_terrier": "n02094433",
 }
 
+# Human-readable names, for the demo app.
+DISPLAY_NAMES = {
+    "basset": "Basset Hound",
+    "bloodhound": "Bloodhound",
+    "border_collie": "Border Collie",
+    "doberman": "Doberman",
+    "german_shepherd": "German Shepherd",
+    "golden_retriever": "Golden Retriever",
+    "maltese": "Maltese",
+    "pug": "Pug",
+    "rhodesian_ridgeback": "Rhodesian Ridgeback",
+    "shih_tzu": "Shih-Tzu",
+    "siberian_husky": "Siberian Husky",
+    "yorkshire_terrier": "Yorkshire Terrier",
+}
+
 # Class index = position in this list. Use it everywhere a label becomes a number.
 CLASS_NAMES = sorted(BREED_WN_IDS)
