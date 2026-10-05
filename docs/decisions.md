@@ -40,3 +40,14 @@ EfficientNet, and ViT models. V1 used TensorFlow/Keras.
 - Models use ImageNet-1k pretrained weights, pinned by name (convnext_tiny.fb_in1k,
 efficientnet_b0.ra_in1k). timm's default convnext_tiny uses ImageNet-12k, which would
 add even more overlap with Stanford Dogs
+
+## 10-2026 - Model selection by validation loss
+- First runs (val accuracy): v1 baseline 33.1%, EfficientNet-80 95.4%, ConvNeXt-Tiny 99.7%.
+- ConvNeXt reached 99.1% with only the head trained (frozen ImageNet features), and its
+best-accuracy checkpoint was that head-only epoch (val loss 0.90 vs 0.15 after fine-tuning).
+Frozen ImageNet-1k features already separate these 12 breeds almost perfectly, which is the
+ImageNet overlap issue in practice.
+- At this accuracy, epochs different by a handful of images, so the best epoch is now chosen
+by lowest val loss. ConvNeXt lr lowered from 3e-4 to 1e-4 (unfreezing at 3e-4 reduced val accuracy).
+- Added a "fresh photos" set (not from ImageNet / Stanford Dogs) to measure performance on
+genuinely new images.

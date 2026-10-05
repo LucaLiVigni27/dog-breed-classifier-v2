@@ -1,3 +1,4 @@
+import csv
 import json
 
 import pytest
@@ -29,6 +30,7 @@ def test_train_then_evaluate_writes_all_files(fake_data, tmp_path):
     assert len(history_lines) == 3  # header + 2 epochs
     summary = json.loads((run_dir / "summary.json").read_text())
     assert summary["best_epoch"] in (1, 2)
+    assert "best_val_loss" in summary and "val_acc_at_best" in summary
 
     metrics = evaluate(run_dir, "val", splits_csv, raw_dir)
     for name in ["predictions_val.csv", "metrics_val.json", "confusion_val.csv"]:
@@ -46,3 +48,19 @@ def test_train_refuses_to_overwrite_a_run(fake_data, tmp_path):
     (tmp_path / "runs" / "test_run").mkdir(parents=True)
     with pytest.raises(SystemExit):
         train(make_test_config(), splits_csv, raw_dir, tmp_path / "runs")
+
+
+def test_best_epoch_is_the_lowest_val_loss(fake_data, tmp_path):
+    splits_csv, raw_dir = fake_data
+    config = make_test_config()
+    config["epochs"] = 3
+    run_dir = train(config, splits_csv, raw_dir, tmp_path / "runs")
+
+    with open(run_dir / "history.csv", newline="") as f:
+        history = list(csv.DictReader(f))
+    # min() keeps the first of equal values, like the strict "<" in train.py.
+    best_row = min(history, key=lambda row: float(row["val_loss"]))
+    summary = json.loads((run_dir / "summary.json").read_text())
+    assert summary["best_epoch"] == int(best_row["epoch"])
+    assert summary["best_val_loss"] == float(best_row["val_loss"])
+    assert summary["val_acc_at_best"] == float(best_row["val_acc"])

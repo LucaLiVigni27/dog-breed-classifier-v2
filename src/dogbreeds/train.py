@@ -1,6 +1,9 @@
 """
 Train a model on the train split and pick the best epoch on the val split.
 
+The best epoch is the one with the lowest val loss, not the highest val accuracy: at ~99%
+accuracy epochs differ by a few images, and val loss also rewards well-calibrated confidence.
+
 The test split is never loaded here; use evaluate.py --split test once, at the end.
 
 Run with: python -m dogbreeds.train --config configs/<name>.yaml
@@ -244,7 +247,8 @@ def train(
     optimizer = build_optimizer(model, config)
     scaler = torch.amp.GradScaler(device.type, enabled=device.type == "cuda")
 
-    best_val_acc = -1.0
+    best_val_loss = math.inf
+    val_acc_at_best = 0.0
     best_epoch = 0
     epochs_without_improvement = 0
     epochs_run = 0
@@ -271,9 +275,10 @@ def train(
         )
         seconds = time.time() - epoch_start
 
-        improved = val_acc > best_val_acc
+        improved = val_loss < best_val_loss
         if improved:
-            best_val_acc = val_acc
+            best_val_loss = val_loss
+            val_acc_at_best = val_acc
             best_epoch = epoch
             epochs_without_improvement = 0
             checkpoint = {
@@ -307,19 +312,23 @@ def train(
 
         patience = config["early_stopping_patience"]
         if patience > 0 and epochs_without_improvement >= patience:
-            print(f"Early stopping: no val improvement for {patience} epochs")
+            print(f"Early stopping: no new val loss minimum for {patience} epochs")
             break
 
     summary = {
         "best_epoch": best_epoch,
-        "best_val_acc": best_val_acc,
+        "best_val_loss": round(best_val_loss, 4),
+        "val_acc_at_best": round(val_acc_at_best, 4),
         "epochs_run": epochs_run,
         "total_seconds": round(time.time() - start_time, 1),
         "device": device.type,
     }
     with open(run_dir / "summary.json", "w") as f:
         json.dump(summary, f, indent=2)
-    print(f"Best val acc {best_val_acc:.3f} at epoch {best_epoch}. Saved to {run_dir}")
+    print(
+        f"Best epoch {best_epoch}: val loss {best_val_loss:.4f}, val acc {val_acc_at_best:.3f}. "
+        f"Saved to {run_dir}"
+    )
     return run_dir
 
 
