@@ -1,0 +1,13 @@
+# Quick local check that the pipeline runs end to end. Not a real experiment.
+run_name: smoke
+model: resnet18
+pretrained: false
+image_size: 64
+augment: true
+normalize: imagenet
+optimizer: adamw
+lr: 1.0e-3
+batch_size: 8
+epochs: 1
+max_batches: 3
+num_workers: 0

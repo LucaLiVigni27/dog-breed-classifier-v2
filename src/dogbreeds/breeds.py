@@ -14,3 +14,6 @@ BREED_WN_IDS = {
     "siberian_husky": "n02110185",
     "yorkshire_terrier": "n02094433",
 }
+
+# Class index = position in this list. Use it everywhere a label becomes a number.
+CLASS_NAMES = sorted(BREED_WN_IDS)

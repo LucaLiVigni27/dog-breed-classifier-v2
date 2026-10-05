@@ -1,0 +1,18 @@
+# Transfer learning from ImageNet weights; head-only warm-up for 2 epochs, then fine-tune all.
+run_name: convnext_tiny
+model: convnext_tiny
+pretrained: true
+image_size: 224
+augment: true
+normalize: imagenet
+optimizer: adamw
+lr: 3.0e-4
+weight_decay: 0.05
+batch_size: 32
+epochs: 15
+freeze_backbone_epochs: 2
+class_weighted_loss: true
+label_smoothing: 0.1
+early_stopping_patience: 5
+seed: 42
+num_workers: 2
