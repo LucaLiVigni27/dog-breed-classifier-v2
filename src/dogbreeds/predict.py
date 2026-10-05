@@ -1,6 +1,7 @@
-"""Run a trained model on any folder of images, e.g. other Stanford breeds as unknown dogs.
+"""
+Run a trained model on any folder of images, (other Stanford breeds as unknown dogs).
 
-An image's true breed is its parent folder name if that is one of our 12 breeds; otherwise it
+An image's true breed is its parent folder name if that is one of our 12 breeds, otherwise it
 is left empty (an "unknown" dog). The confidence summary helps choose a threshold for
 "not one of our breeds".
 
@@ -14,7 +15,7 @@ import random
 from pathlib import Path
 
 import torch
-from PIL import Image
+from PIL import Image, ImageOps
 
 from dogbreeds.breeds import BREED_WN_IDS, CLASS_NAMES
 from dogbreeds.dataset import build_transform
@@ -68,7 +69,8 @@ def load_image(path: Path, transform) -> torch.Tensor | None:
     """Open and transform one image, or return None (with a warning) if it can't be read."""
     try:
         with Image.open(path) as img:
-            return transform(img.convert("RGB"))
+            upright = ImageOps.exif_transpose(img)
+            return transform(upright.convert("RGB"))
     except OSError as error:
         print(f"Warning: skipping {path}: {error}")
         return None

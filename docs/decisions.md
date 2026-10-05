@@ -42,12 +42,18 @@ efficientnet_b0.ra_in1k). timm's default convnext_tiny uses ImageNet-12k, which 
 add even more overlap with Stanford Dogs
 
 ## 10-2026 - Model selection by validation loss
-- First runs (val accuracy): v1 baseline 33.1%, EfficientNet-80 95.4%, ConvNeXt-Tiny 99.7%.
+- First runs (val accuracy): v1 baseline 33.1%, EfficientNet-B0 95.4%, ConvNeXt-Tiny 99.7%.
 - ConvNeXt reached 99.1% with only the head trained (frozen ImageNet features), and its
 best-accuracy checkpoint was that head-only epoch (val loss 0.90 vs 0.15 after fine-tuning).
 Frozen ImageNet-1k features already separate these 12 breeds almost perfectly, which is the
 ImageNet overlap issue in practice.
-- At this accuracy, epochs different by a handful of images, so the best epoch is now chosen
+- At this accuracy, epochs differ by a handful of images, so the best epoch is now chosen
 by lowest val loss. ConvNeXt lr lowered from 3e-4 to 1e-4 (unfreezing at 3e-4 reduced val accuracy).
 - Added a "fresh photos" set (not from ImageNet / Stanford Dogs) to measure performance on
 genuinely new images.
+
+## 10-2026 - Fresh photos
+- 60 (5 per breed) from Unsplash and Pexels, plus a few Bloodhound photos from Purina UK. Source
+and photographer are recorded in the file names. See docs/fresh_photos.csv.
+- Checked with perceptual hashing (pHash, distance <=8) against all 20,580 Stanford Dogs images: 0 matches
+- Photos are used for evaluation only and are not stored in the repo.
