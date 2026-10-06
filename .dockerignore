@@ -1,0 +1,11 @@
+.git
+.venv
+data
+outputs
+notebooks
+docs
+tests
+legacy
+**/__pycache__
+**/.DS_Store
+demo/best.pt
