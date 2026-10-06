@@ -1,6 +1,6 @@
 # Dog Breed Classifier V2
 
-A CNN that identifies 12 dog breeds from a photo, rebuilt from a 2024 team project (v1) with transfer leraning, a fixed and documented dataset, and an honest evaluation.
+A CNN that identifies 12 dog breeds from a photo, rebuilt from a 2024 team project (v1) with transfer learning, a fixed and documented dataset, and an honest evaluation.
 
 **Final model: ConvNeXt-Tiny, 98.5% test accuracy and 59 / 60 on new photos it has never seen.**
 
@@ -81,7 +81,7 @@ Training on Colab: see `notebooks/02_train_colab.ipynb`.
 ## Project structure
 
 ```
-src/dogbreeds/   dataset building, split, training, evaluation,prediction
+src/dogbreeds/   dataset building, split, training, evaluation, prediction, inference
 configs/         one YAML file per experiment
 notebooks/       01 data exploration, 02 training on Colab, 03 results
 demo/            Streamlit app and example photos (deployed on Streamlit Community Cloud)
