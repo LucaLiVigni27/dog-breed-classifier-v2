@@ -4,6 +4,10 @@ A CNN that identifies 12 dog breeds from a photo, rebuilt from a 2024 team proje
 
 **Final model: ConvNeXt-Tiny, 98.5% test accuracy and 59 / 60 on new photos it has never seen.**
 
+**Live demo: [dog-breed-classifier-v2.streamlit.app](https://dog-breed-classifier-v2.streamlit.app/)**
+(upload of paste a dog photo; below 80% confidence it answers "not sure." The free hosting sleeps when unused,
+so the first visit can take a minute to wake up.)
+
 ## Results
 
 | Model | Val | Test (326) | Test macro F1 | Fresh photos (60) |
@@ -30,6 +34,34 @@ All Stanford Dogs images of 12 breeds (2,158), fixed 70/15/15 stratified split i
 Details, known issues and licence: [docs/data_card.md](docs/data_card.md).
 Every decision and its reason: [docs/decisions.md](docs/decisions.md).
 
+## Try the trained model
+
+The trained weights (`best.pt`) are attached to the
+[v1.0 release](https://github.com/LucaLiVigni27/dog-breed-classifier-v2/releases/tag/v1.0).
+
+```bash
+pip install -e ".[demo]"
+python -m dogbreeds.inference --checkpoint best.pt --image my_dog.jpg
+DOGBREEDS_CHECKPOINT=best.pt python -m streamlit run demo/streamlit_app.py
+```
+
+## Run the demo with Docker
+
+```bash
+docker build -t dog-breed-classifier .
+docker run --rm -p 8501:8501 dog-breed-classifier
+```
+
+Then open http://localhost:8501. The container downloads the weights from the release on first
+use. To use a local copy instead, mount it and point the app at it:
+
+```bash
+docker run --rm -p 8501:8501 \
+  -v "$(pwd)/outputs/runs/convnext_tiny_v2:/weights:ro" \
+  -e DOGBREEDS_CHECKPOINT=/weights/best.pt \
+  dog-breed-classifier
+```
+
 ## How to reproduce
 
 ```bash
@@ -52,6 +84,8 @@ Training on Colab: see `notebooks/02_train_colab.ipynb`.
 src/dogbreeds/   dataset building, split, training, evaluation,prediction
 configs/         one YAML file per experiment
 notebooks/       01 data exploration, 02 training on Colab, 03 results
+demo/            Streamlit app and example photos (deployed on Streamlit Community Cloud)
+Dockerfile       container for the demo
 docs/            data card, decisions log, figures
 tests/           pytest suite (runs on CPU with tiny fake images)
 legacy/v1/       the surviving v1 data-loading script
